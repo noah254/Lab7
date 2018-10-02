@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// Check for feedback:
 	if (!empty($_POST['feedb'])) {
-		$p = mysqli_real_escape_string($dbc, trim($_POST['feedb']));
+		$fb = mysqli_real_escape_string($dbc, trim($_POST['feedb']));
 	}
 	else {
 		$errors[] = 'You forgot to enter feedback.';
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// Register the user in the database...
 
 		// Make the query:
-		$q = "INSERT INTO users (first_name, last_name, email, pass, registration_date) VALUES ('$fn', '$ln', '$e', SHA2('$p', 512), NOW() )";
+		$q = "INSERT INTO users (first_name, last_name, feedback) VALUES ('$fn', '$ln', '$fb')";
 		$r = @mysqli_query($dbc, $q); // Run the query.
 		if ($r) { // If it ran OK.
 

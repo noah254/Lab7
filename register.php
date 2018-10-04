@@ -26,29 +26,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	}
 
 	// Check for an email address:
-	if (empty($_POST['email'])) {
-		$errors[] = 'You forgot to enter your email address.';
+	if (empty($_POST['feedback'])) {
+		$errors[] = 'You forgot to enter feedback.';
 	} else {
-		$e = mysqli_real_escape_string($dbc, trim($_POST['email']));
+		$e = mysqli_real_escape_string($dbc, trim($_POST['feedback']));
 	}
 
-	// Check for a password and match against the confirmed password:
-	if (!empty($_POST['pass1'])) {
-		if ($_POST['pass1'] != $_POST['pass2']) {
-			$errors[] = 'Your password did not match the confirmed password.';
-		} else {
-			$p = mysqli_real_escape_string($dbc, trim($_POST['pass1']));
-		}
-	} else {
-		$errors[] = 'You forgot to enter your password.';
-	}
+
 
 	if (empty($errors)) { // If everything's OK.
 
 		// Register the user in the database...
 
 		// Make the query:
-		$q = "INSERT INTO users (first_name, last_name, email, pass, registration_date) VALUES ('$fn', '$ln', '$e', SHA2('$p', 512), NOW() )";
+		$q = "INSERT INTO customers (first_name, last_name, feedback) VALUES ('$fn', '$ln', '$fb')";
 		$r = @mysqli_query($dbc, $q); // Run the query.
 		if ($r) { // If it ran OK.
 
@@ -92,9 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form action="register.php" method="post">
 	<p>First Name: <input type="text" name="first_name" size="15" maxlength="20" value="<?php if (isset($_POST['first_name'])) echo $_POST['first_name']; ?>"></p>
 	<p>Last Name: <input type="text" name="last_name" size="15" maxlength="40" value="<?php if (isset($_POST['last_name'])) echo $_POST['last_name']; ?>"></p>
-	<p>Email Address: <input type="email" name="email" size="20" maxlength="60" value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" > </p>
-	<p>Password: <input type="password" name="pass1" size="10" maxlength="20" value="<?php if (isset($_POST['pass1'])) echo $_POST['pass1']; ?>" ></p>
-	<p>Confirm Password: <input type="password" name="pass2" size="10" maxlength="20" value="<?php if (isset($_POST['pass2'])) echo $_POST['pass2']; ?>" ></p>
+	<p>Feedback: <input type="text" name="feedback" value="<?php if (isset($_POST['feedback'])) echo $_POST['feedback']; ?>" ></p>
 	<p><input type="submit" name="submit" value="Register"></p>
 </form>
 <?php include('includes/footer.html'); ?>
